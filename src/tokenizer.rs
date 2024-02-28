@@ -14,6 +14,9 @@ pub fn tokenize(source: &str) -> Box<Vec<BorgerToken>> {
     let mut tokens: Box<Vec<BorgerToken>> = Box::new(Vec::new());
     let mut chars = source.chars().peekable();
 
+    let mut line_number = 0;
+    let mut column_number = 0;
+
     loop {
         if chars.peek() == None { break; }
 
@@ -23,6 +26,14 @@ pub fn tokenize(source: &str) -> Box<Vec<BorgerToken>> {
         if match_whitespace(char) {
             loop {
                 if chars.peek() == None { return tokens; }
+
+                if char == '\n' {
+                    line_number += 1;
+                }
+
+                if char == '\t' || char == ' ' {
+                    column_number += 1;
+                }
 
                 let next = *chars.peek().unwrap();
                 char = chars.next().unwrap();
@@ -39,11 +50,12 @@ pub fn tokenize(source: &str) -> Box<Vec<BorgerToken>> {
                 if !match_alphanumeric(*chars.peek().unwrap()) { break; }
 
                 char = chars.next().unwrap();
+                column_number += 1;
             }
         }
 
         else {
-            panic!("Invalid token found while lexing! {char}")
+            panic!("Invalid token found while lexing! {char} <-- at line {line_number} col {column_number}")
         }
 
         tokens.push(BorgerToken { text })
