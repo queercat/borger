@@ -1,7 +1,9 @@
+use crate::reader::repl;
 use crate::tokenizer::tokenize;
+pub mod reader;
 mod test;
 pub mod tokenizer;
 
 fn main() {
-    let borkens = tokenize("(+ 3 (- 4 2))");
+    repl();
 }
