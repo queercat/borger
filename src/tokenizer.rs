@@ -1,10 +1,17 @@
 #[derive(Debug)]
-pub struct Token {
+pub struct BorgerToken {
     pub text: String
 }
 
-pub fn tokenize(source: &str) -> Box<Vec<Token>> {
-    let mut tokens: Box<Vec<Token>> = Box::new(Vec::new());
+impl PartialEq for BorgerToken {
+    fn eq(&self, other: &Self) -> bool {
+        self.text == other.text
+    }
+}
+
+/// Produces a vector of Borger tokens from a given source program.
+pub fn tokenize(source: &str) -> Box<Vec<BorgerToken>> {
+    let mut tokens: Box<Vec<BorgerToken>> = Box::new(Vec::new());
     let mut chars = source.chars().peekable();
 
     loop {
@@ -35,7 +42,11 @@ pub fn tokenize(source: &str) -> Box<Vec<Token>> {
             }
         }
 
-        tokens.push(Token { text })
+        else {
+            panic!("Invalid token found while lexing! {char}")
+        }
+
+        tokens.push(BorgerToken { text })
     }
 
     return tokens;
