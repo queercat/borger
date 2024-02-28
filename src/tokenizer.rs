@@ -1,6 +1,6 @@
 #[derive(Debug)]
 pub struct BorgerToken {
-    pub text: String
+    pub text: String,
 }
 
 impl PartialEq for BorgerToken {
@@ -18,14 +18,18 @@ pub fn tokenize(source: &str) -> Box<Vec<BorgerToken>> {
     let mut column_number = 0;
 
     loop {
-        if chars.peek() == None { break; }
+        if chars.peek() == None {
+            break;
+        }
 
         let mut char = chars.next().unwrap();
         let mut text = String::new();
 
         if match_whitespace(char) {
             loop {
-                if chars.peek() == None { return tokens; }
+                if chars.peek() == None {
+                    return tokens;
+                }
 
                 if char == '\n' {
                     line_number += 1;
@@ -38,7 +42,9 @@ pub fn tokenize(source: &str) -> Box<Vec<BorgerToken>> {
                 let next = *chars.peek().unwrap();
                 char = chars.next().unwrap();
 
-                if !match_whitespace(next) { break; }
+                if !match_whitespace(next) {
+                    break;
+                }
             }
         }
 
@@ -46,15 +52,22 @@ pub fn tokenize(source: &str) -> Box<Vec<BorgerToken>> {
             loop {
                 text.push(char);
 
-                if chars.peek() == None { break; }
-                if !match_alphanumeric(*chars.peek().unwrap()) { break; }
+                if chars.peek() == None {
+                    break;
+                }
+
+                if !match_alphanumeric(*chars.peek().unwrap()) {
+                    break;
+                }
 
                 char = chars.next().unwrap();
                 column_number += 1;
             }
-        }
+        } else if match_symbol(char) {
+            text.push(char);
 
-        else {
+            column_number += 1;
+        } else {
             panic!("Invalid token found while lexing! {char} <-- at line {line_number} col {column_number}")
         }
 
@@ -64,8 +77,12 @@ pub fn tokenize(source: &str) -> Box<Vec<BorgerToken>> {
     return tokens;
 }
 
+fn match_symbol(char: char) -> bool {
+    char == '(' || char == ')' || char == '+' || char == '-' || char == '/' || char == '*'
+}
+
 fn match_alphanumeric(char: char) -> bool {
-   (char >= '0' && char <= '9') || (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')
+    (char >= '0' && char <= '9') || (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')
 }
 
 fn match_whitespace(char: char) -> bool {
