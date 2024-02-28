@@ -1,3 +1,8 @@
+use crate::tokenizer::{Token, tokenize};
+pub mod tokenizer;
+
 fn main() {
-    println!("Hello, world!");
+    let tokens = tokenize("hello world");
+
+    println!("{:?}", *tokens)
 }
