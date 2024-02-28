@@ -1,4 +1,4 @@
-use crate::tokenizer::{Token, tokenize};
+use crate::tokenizer::tokenize;
 pub mod tokenizer;
 
 fn main() {
