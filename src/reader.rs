@@ -1,16 +1,29 @@
 use crate::tokenizer::{tokenize, BorgerToken};
-use std::io::{stdin, Read, stdout, Write};
+use std::io::{stdin, stdout, Write};
+
+#[derive(Debug)]
+enum BorgerType {
+    Symbol(String),
+    Number(f64),
+    List(Vec<BorgerType>)
+}
 
 pub fn repl() {
     loop {
-        let tokens = eval(read());
+        let ast = eval(read());
 
-        println!("{:?}", tokens);
+        println!("{:?}", ast);
     }
 }
 
-pub fn eval(source: String) -> Box<Vec<BorgerToken>> {
-    tokenize(source.as_str())
+fn read_form(tokens) -> BorgerType {
+    BorgerType::Number(1f64)
+}
+
+fn eval(source: String) -> BorgerType {
+    let mut tokens = tokenize(source.as_str());
+
+    read_form(&mut tokens)
 }
 
 pub fn read() -> String {
