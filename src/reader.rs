@@ -1,6 +1,4 @@
-use std::any::Any;
-use crate::tokenizer::{match_alpha, match_numeric, tokenize, BorgerToken};
-use std::fmt::Pointer;
+use crate::tokenizer::{match_alpha, match_numeric, match_symbol, tokenize, BorgerToken};
 use std::io::{stdin, stdout, Write};
 use std::iter::Peekable;
 
@@ -29,7 +27,7 @@ fn read_atom(token: &BorgerToken) -> BorgerType {
         ast = BorgerType::Boolean(token.text == "true");
     } else if token.text == "null" {
         ast = BorgerType::Null
-    } else if match_alpha(c) {
+    } else if match_alpha(c) || match_symbol(c) {
         ast = BorgerType::Symbol(token.text.clone());
     } else if match_numeric(c) {
         ast = BorgerType::Number(token.text.parse::<f64>().unwrap())
@@ -39,7 +37,9 @@ fn read_atom(token: &BorgerToken) -> BorgerType {
 }
 
 fn read_list<'a, I>(tokens: &mut Peekable<I>) -> BorgerType
-where I: Iterator<Item = &'a BorgerToken> {
+where
+    I: Iterator<Item = &'a BorgerToken>,
+{
     let mut token = *tokens.peek().unwrap();
     let mut list = Vec::new();
 
@@ -52,7 +52,9 @@ where I: Iterator<Item = &'a BorgerToken> {
 }
 
 fn read_form<'a, I>(tokens: &mut Peekable<I>) -> BorgerType
-where I: Iterator<Item = &'a BorgerToken> {
+where
+    I: Iterator<Item = &'a BorgerToken>,
+{
     let token = tokens.next().unwrap();
 
     let ast = match token.text.as_str() {
