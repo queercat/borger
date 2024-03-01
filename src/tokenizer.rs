@@ -1,4 +1,4 @@
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct BorgerToken {
     pub text: String,
 }
@@ -77,14 +77,22 @@ pub fn tokenize(source: &str) -> Box<Vec<BorgerToken>> {
     return tokens;
 }
 
-fn match_symbol(char: char) -> bool {
+pub fn match_alpha(char: char) -> bool {
+    (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')
+}
+
+pub fn match_numeric(char: char) -> bool {
+    (char >= '0' && char <= '9') || char == '.'
+}
+
+pub fn match_symbol(char: char) -> bool {
     char == '(' || char == ')' || char == '+' || char == '-' || char == '/' || char == '*'
 }
 
-fn match_alphanumeric(char: char) -> bool {
-    (char >= '0' && char <= '9') || (char >= 'a' && char <= 'z') || (char >= 'A' && char <= 'Z')
+pub fn match_alphanumeric(char: char) -> bool {
+    match_alpha(char) || match_numeric(char)
 }
 
-fn match_whitespace(char: char) -> bool {
+pub fn match_whitespace(char: char) -> bool {
     char == ' ' || char == '\n' || char == '\t'
 }
