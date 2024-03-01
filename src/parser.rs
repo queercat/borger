@@ -1,12 +1,13 @@
+use crate::tokenizer::{match_alpha, match_numeric, match_symbol, BorgerToken};
 use std::iter::Peekable;
-use crate::tokenizer::{BorgerToken, match_alpha, match_numeric, match_symbol};
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum BorgerType {
     Symbol(String),
     Number(f64),
     List(Vec<BorgerType>),
     Boolean(bool),
+    Function(fn(BorgerType) -> BorgerType),
     Null,
 }
 
@@ -28,8 +29,8 @@ pub fn read_atom(token: &BorgerToken) -> BorgerType {
 }
 
 pub fn read_list<'a, I>(tokens: &mut Peekable<I>) -> BorgerType
-    where
-        I: Iterator<Item = &'a BorgerToken>,
+where
+    I: Iterator<Item = &'a BorgerToken>,
 {
     let mut token = *tokens.peek().unwrap();
     let mut list = Vec::new();
@@ -43,8 +44,8 @@ pub fn read_list<'a, I>(tokens: &mut Peekable<I>) -> BorgerType
 }
 
 pub fn read_form<'a, I>(tokens: &mut Peekable<I>) -> BorgerType
-    where
-        I: Iterator<Item = &'a BorgerToken>,
+where
+    I: Iterator<Item = &'a BorgerToken>,
 {
     let token = tokens.next().unwrap();
 
