@@ -45,7 +45,7 @@ where I: Iterator<Item = &'a BorgerToken> {
 
     while token.text.as_str() != ")" {
         list.push(read_form(tokens));
-        token = tokens.next().unwrap();
+        token = tokens.peek().unwrap();
     }
 
     BorgerType::List(list)
