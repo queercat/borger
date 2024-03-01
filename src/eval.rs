@@ -22,6 +22,10 @@ impl BorgerEnvironment {
             },
         }
     }
+
+    pub fn set(&mut self, symbol: String, value: BorgerType) {
+        self.data.insert(symbol, Box::new(value));
+    }
 }
 
 pub fn eval_ast<'a>(ast: &BorgerType, environment: &'a mut BorgerEnvironment) -> &'a BorgerType {
