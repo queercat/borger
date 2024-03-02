@@ -1,6 +1,5 @@
 use std::io::{stdin, stdout, Write};
 
-use eval::{eval_ast, BorgerEnvironment, BorgerMap};
 use parser::{read_form, BorgerType};
 use tokenizer::tokenize;
 
@@ -11,25 +10,20 @@ pub mod eval;
 pub mod tokenizer;
 
 fn main() {
-    let mut environment = BorgerEnvironment {
-        data: BorgerMap::new(),
-        outer: None,
-    };
-
     loop {
-        let ast = eval(read(), &mut environment);
+        let ast = eval(read());
 
         println!("{:?}", ast);
     }
 }
 
-fn eval(source: String, environment: &mut BorgerEnvironment) -> &BorgerType {
+fn eval(source: String) -> BorgerType {
     let binding = tokenize(source.as_str());
     let mut tokens = binding.iter().peekable();
 
     let ast = read_form(&mut tokens);
 
-    eval_ast(&ast, environment)
+    ast
 }
 
 pub fn read() -> String {
