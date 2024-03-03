@@ -12,9 +12,12 @@ pub mod tokenizer;
 
 fn main() {
     loop {
-        let ast = eval(read());
+        let ast = std::panic::catch_unwind(|| eval(read()));
 
-        println!("{:?}", ast);
+        match ast {
+            Ok(ast) => println!("{:?}", ast),
+            Err(_) => println!("SPANK! SPANK! SPANK! Naughty programmer"),
+        }
     }
 }
 
