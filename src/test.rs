@@ -1,7 +1,6 @@
-#[cfg(test)]
 mod tests {
+    #[cfg(test)]
     use crate::{
-        eval::{BorgerEnvironment, BorgerMap},
         parser::{read_form, BorgerType},
         tokenizer::{tokenize, BorgerToken},
     };

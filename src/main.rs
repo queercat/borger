@@ -1,5 +1,6 @@
 use std::io::{stdin, stdout, Write};
 
+use eval::{eval_ast, BorgerEnvironment};
 use parser::{read_form, BorgerType};
 use tokenizer::tokenize;
 
@@ -22,8 +23,9 @@ fn eval(source: String) -> BorgerType {
     let mut tokens = binding.iter().peekable();
 
     let ast = read_form(&mut tokens);
+    let mut environment = &mut BorgerEnvironment::default();
 
-    ast
+    *eval_ast(ast, &mut environment)
 }
 
 pub fn read() -> String {

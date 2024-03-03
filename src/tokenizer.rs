@@ -86,7 +86,13 @@ pub fn match_numeric(char: char) -> bool {
 }
 
 pub fn match_symbol(char: char) -> bool {
-    char == '(' || char == ')' || char == '+' || char == '-' || char == '/' || char == '*'
+    char == '('
+        || char == ')'
+        || char == '+'
+        || char == '-'
+        || char == '/'
+        || char == '*'
+        || char == '\''
 }
 
 pub fn match_alphanumeric(char: char) -> bool {
@@ -94,5 +100,5 @@ pub fn match_alphanumeric(char: char) -> bool {
 }
 
 pub fn match_whitespace(char: char) -> bool {
-    char == ' ' || char == '\n' || char == '\t'
+    char == ' ' || char == '\n' || char == '\t' || char == '\r'
 }

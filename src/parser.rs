@@ -1,7 +1,7 @@
 use crate::tokenizer::{match_alpha, match_numeric, match_symbol, BorgerToken};
 use std::iter::Peekable;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum BorgerType {
     Symbol(String),
     Number(f64),
@@ -39,6 +39,8 @@ where
         list.push(read_form(tokens));
         token = tokens.peek().expect("Expected ) but found None instead")
     }
+
+    tokens.next();
 
     BorgerType::List(list)
 }
